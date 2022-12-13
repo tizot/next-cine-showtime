@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  @apply hover:text-sky-700 hover:underline;
+}
+
+.header-cell {
+  @apply px-4 py-1 whitespace-nowrap text-sm font-medium text-gray-900;
+}
+
+.cell {
+  @apply px-4 py-1 whitespace-nowrap text-sm font-light text-gray-900;
+}
+
+.showtimes-table td {
+  @apply cell;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development pnpm nodemon -r dotenv/config src/index.js",
+    "test": "pnpm ava",
+    "clean:dist": "rm -rf src/public/*",
+    "clean:all": "pnpm run clean:dist && rm -rf node_modules"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cron": "^2.1.0",
+    "cronstrue": "^2.21.0",
+    "date-fns": "^2.29.3",
+    "express": "^4.18.2",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0",
+    "iso8601-duration": "^2.1.1",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "ava": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20"
+  },
+  "importSort": {
+    ".js": {
+      "style": "renke"
+    }
+  }
+}
