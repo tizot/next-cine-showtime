@@ -17,7 +17,7 @@ import { search } from "./sens-critique/index.js";
 const app = express();
 const port = process.env.PORT ?? 4500;
 
-const cronTime = "0 0 8 * * *";
+const cronTime = "0 0 */6 * * *";
 const dailyCacheEviction = new CronJob(
   cronTime,
   () => {

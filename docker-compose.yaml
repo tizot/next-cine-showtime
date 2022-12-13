@@ -1,8 +1,10 @@
 version: '3.9'
 
 services:
-  app:
-    image: tizot/cine-ts:latest
+  cine-app:
+    image: tizot/cine:latest
     env_file:
       - ./prod.env
     restart: always
+    ports:
+      - 4500:4500

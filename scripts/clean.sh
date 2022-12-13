@@ -3,16 +3,16 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+set -o xtrace
 
-cd "$(dirname "$0")"
-cd ..
+cd "$(git rev-parse --show-toplevel)/backend"
 
 rm -rf node_modules
 
-cd backend
+cd "$(git rev-parse --show-toplevel)/backend"
 pnpm run clean:all
 
-cd ../frontend
+cd "$(git rev-parse --show-toplevel)/frontend"
 pnpm run clean:all
 
 exit 0
