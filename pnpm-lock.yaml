@@ -9,6 +9,7 @@ importers:
       cron: ^2.1.0
       cronstrue: ^2.21.0
       date-fns: ^2.29.3
+      date-fns-tz: ^1.3.7
       dotenv: ^16.0.3
       express: ^4.18.2
       graphql: ^16.6.0
@@ -22,6 +23,7 @@ importers:
       cron: 2.1.0
       cronstrue: 2.21.0
       date-fns: 2.29.3
+      date-fns-tz: 1.3.7_date-fns@2.29.3
       express: 4.18.2
       graphql: 16.6.0
       graphql-request: 5.0.0_graphql@16.6.0

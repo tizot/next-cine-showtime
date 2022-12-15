@@ -1,4 +1,5 @@
 import _ from "lodash";
+import dateFnsTz from "date-fns-tz";
 import { GraphQLClient, gql } from "graphql-request";
 import { add } from "date-fns";
 import { parse as parseDuration } from "iso8601-duration";
@@ -101,7 +102,9 @@ const _fetchMovies = async (cinema, date) => {
       userRating: movie.stats?.userRating?.score,
       pressRating: movie.stats?.pressReview?.score,
       showtimes: {
-        [cinema]: edge.node.showtimes.map((s) => new Date(s.startsAt)),
+        [cinema]: edge.node.showtimes.map((s) =>
+          dateFnsTz.zonedTimeToUtc(s.startsAt, "Europe/Paris")
+        ),
       },
     };
     movies[title] = details;
