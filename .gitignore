@@ -1,5 +1,5 @@
 prod.env
-backend/.env.local
+backend/.env
 backend/src/public
 frontend/dist
 
