@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
-import { format, parseISO } from "date-fns";
-import { range, size } from "lodash";
+import { formatInTimeZone } from "date-fns-tz";
+import { parseISO } from "date-fns";
+import { size } from "lodash";
 
 type Movie = {
   title: string;
@@ -122,7 +122,13 @@ const Showtimes = ({
                         <td>{cinema}</td>
                         <td className="text-left">
                           {times
-                            .map((t) => format(parseISO(t), "HH:mm"))
+                            .map((t) =>
+                              formatInTimeZone(
+                                parseISO(t),
+                                "Europe/Paris",
+                                "HH:mm"
+                              )
+                            )
                             .join(" - ")}
                         </td>
                       </tr>

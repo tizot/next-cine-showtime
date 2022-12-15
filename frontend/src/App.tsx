@@ -1,6 +1,6 @@
+import { Link, useLoaderData } from "react-router-dom";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { isEqual as _isEqual, range, sortBy } from "lodash";
-import { Link, useLoaderData } from "react-router-dom";
 import {
   add,
   format,
@@ -30,6 +30,7 @@ const formatDate = (date: Date) => {
       year: "numeric",
       month: "long",
       day: "numeric",
+      timeZone: "Europe/Paris",
     },
     {
       locale: "fr-FR",
