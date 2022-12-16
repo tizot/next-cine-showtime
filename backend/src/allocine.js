@@ -73,7 +73,7 @@ const GET_THEATER_SHOWTIME = gql`
               }
             }
           }
-          showtimes {
+          showtimes(version: [LOCAL, ORIGINAL]) {
             startsAt
           }
         }
@@ -94,6 +94,10 @@ const _fetchMovies = async (cinema, date) => {
 
   const movies = {};
   for (const edge of data.movieShowtimeList.edges) {
+    if (edge.node.showtimes.length === 0) {
+      continue;
+    }
+
     const movie = edge.node.movie;
     const title = movie.title;
     const details = {
