@@ -96,7 +96,7 @@ const Showtimes = ({
                             <td rowSpan={cineCount}>
                               {movie.userRating ? (
                                 <a
-                                  href={`https://www.allocine.fr/film/fichefilm_gen_cfilm=${movie.allocineId}`}
+                                  href={`https://www.allocine.fr/film/fichefilm_gen_cfilm=${movie.allocineId}.html`}
                                   target="_blank"
                                 >
                                   {movie.userRating}
