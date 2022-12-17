@@ -1,6 +1,6 @@
-import { Link, useLoaderData } from "react-router-dom";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { isEqual as _isEqual, range, sortBy } from "lodash";
+import { Link, useLoaderData } from "react-router-dom";
 import {
   add,
   format,
@@ -16,10 +16,10 @@ const API_ENDPOINT = `${
   process.env.NODE_ENV === "development" ? "http://localhost:4500" : ""
 }/api`;
 const DEFAULT_CINEMAS = [
+  "Luminor HdV",
   "Majestic Bastille",
   "mk2 Beaumarchais",
   "mk2 Saint-Antoine",
-  "UGC Lyon Bastille",
 ];
 
 const formatDate = (date: Date) => {

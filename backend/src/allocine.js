@@ -16,6 +16,14 @@ const cinemaIds = {
   "UGC Lyon Bastille": "VGhlYXRlcjpDMDE0Ng==",
   "UGC Les Halles": "VGhlYXRlcjpDMDE1OQ==",
   "mk2 Bibliothèque": "VGhlYXRlcjpDMjk1NA==",
+  "mk2 Beaubourg": "VGhlYXRlcjpDMDA1MA==",
+  "mk2 Odéon St-Michel": "VGhlYXRlcjpDMDA5Mg==",
+  "mk2 Odéon St-Germain": "VGhlYXRlcjpDMDA5Nw==",
+  "UGC Danton": "VGhlYXRlcjpDMDEwMg==",
+  "UGC Odéon": "VGhlYXRlcjpDMDEwNA==",
+  "UGC Gobelins": "VGhlYXRlcjpDMDE1MA==",
+  "Luminor HdV": "VGhlYXRlcjpDMDAxMw==",
+  "Le Grand Action": "VGhlYXRlcjpDMDA3Mg==",
 };
 
 export const getAllCinemas = () =>
@@ -41,7 +49,7 @@ const FIND_THEATER_ID = gql`
 
 export const findTheaterId = async (name) => {
   const client = new GraphQLClient("https://graph.allocine.fr/v1/public", {
-    headers: { Authorization: allocineToken },
+    headers: { Authorization: process.env.ALLOCINE_TOKEN },
   });
   const data = await client.request(FIND_THEATER_ID, {
     name,
