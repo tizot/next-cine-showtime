@@ -1,5 +1,13 @@
 #!/usr/bin/env zx
 
+try {
+  (await $`docker ps`).quiet();
+} catch (err) {
+  console.error(chalk.yellow("Docker appears not to be running."));
+  console.error(chalk.red("Aborting deploy."));
+  await $`exit 1`;
+}
+
 // Just to remember 1Password password / TouchID
 await $`op item list`.quiet();
 
