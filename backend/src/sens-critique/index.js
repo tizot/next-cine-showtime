@@ -10,6 +10,7 @@ const GET_SENSCRITIQUE_RATING = gql`
         universe
         products_list {
           title
+          year_of_production
           rating
           url
         }
@@ -27,7 +28,7 @@ const _clean = (s) => {
   );
 };
 
-export const _search = async (title, scAuthToken) => {
+export const _search = async (title, year, scAuthToken) => {
   const client = new GraphQLClient("https://gql.senscritique.com/graphql", {
     headers: { Authorization: scAuthToken },
   });
@@ -36,7 +37,12 @@ export const _search = async (title, scAuthToken) => {
     (p) => p.universe == "movie"
   ) ?? { products_list: [] };
   const match = movies.products_list.find(
-    (m) => _clean(m.title) == _clean(title)
+    // Sometimes, SensCritique says the movie is from 2021 but Allocine says it is from 2022.
+    // Since it is highly unlikely that two different movies with the same name are produced
+    // less than 2 years apart, this condition is enough.
+    (m) =>
+      Math.abs(m.year_of_production - year) <= 2 &&
+      _clean(m.title) === _clean(title)
   );
   if (!match) {
     return { rating: null, url: null };

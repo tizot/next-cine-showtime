@@ -72,6 +72,9 @@ const GET_THEATER_SHOWTIME = gql`
             internalId
             title
             runtime
+            data {
+              productionYear
+            }
             stats {
               userRating {
                 score
@@ -110,6 +113,7 @@ const _fetchMovies = async (cinema, date) => {
     const title = movie.title;
     const details = {
       allocineId: movie.internalId,
+      year: movie.data?.productionYear,
       duration: formatDuration(parseDuration(movie.runtime)),
       userRating: movie.stats?.userRating?.score,
       pressRating: movie.stats?.pressReview?.score,
@@ -155,7 +159,7 @@ export const allMovies = async (cinemas, date, scAuthToken) => {
 
   const allTitles = Object.keys(movies);
   const scData = await Promise.all(
-    allTitles.map((title) => search(title, scAuthToken))
+    allTitles.map((title) => search(title, movies[title].year, scAuthToken))
   );
   _.zip(allTitles, scData).forEach(([title, data]) => {
     movies[title] = {
