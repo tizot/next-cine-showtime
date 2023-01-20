@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 try {
-  (await $`docker ps`).quiet();
+  await $`docker ps`.quiet();
 } catch (err) {
   console.error(chalk.yellow("Docker appears not to be running."));
   console.error(chalk.red("Aborting deploy."));
