@@ -114,7 +114,9 @@ const _fetchMovies = async (cinema, date) => {
     const details = {
       allocineId: movie.internalId,
       year: movie.data?.productionYear,
-      duration: formatDuration(parseDuration(movie.runtime)),
+      duration: movie.runtime
+        ? formatDuration(parseDuration(movie.runtime))
+        : "N/A",
       userRating: movie.stats?.userRating?.score,
       pressRating: movie.stats?.pressReview?.score,
       showtimes: {
