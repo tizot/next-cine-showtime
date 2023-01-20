@@ -5,7 +5,7 @@ import { cache } from "../cache.js";
 
 const GET_SENSCRITIQUE_RATING = gql`
   query Search($title: String!) {
-    searchResult(keywords: $title, limit: 10) {
+    searchResult(keywords: $title, limit: 15, universe: "movie") {
       results {
         universe
         products_list {
@@ -20,12 +20,9 @@ const GET_SENSCRITIQUE_RATING = gql`
 `;
 
 const _clean = (s) => {
-  return _.deburr(
-    s
-      .toLocaleLowerCase()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
-      .replace(/\s/g, "")
-  );
+  return _.deburr(s.toLocaleLowerCase())
+    .replace(/[^a-z0-9]/g, "")
+    .replace(/\s/g, "");
 };
 
 export const _search = async (title, year, scAuthToken) => {
