@@ -2,16 +2,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { parseISO } from "date-fns";
 import { size } from "lodash";
 
-type Movie = {
-  title: string;
-  duration: string;
-  allocineId: string;
-  sensCritiqueRating?: number;
-  sensCritiqueUrl?: string;
-  userRating?: number;
-  pressRating?: number;
-  showtimes: Record<string, string[]>;
-};
+import type { Movie } from "./types";
 
 const Showtimes = ({
   movies,

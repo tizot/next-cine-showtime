@@ -1,5 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from "react";
-import { isEqual as _isEqual, range, sortBy } from "lodash";
+import React, { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import {
   add,
@@ -9,8 +8,10 @@ import {
   isEqual,
   startOfDay,
 } from "date-fns";
+import { deburr, isEqual as _isEqual, range, sortBy } from "lodash";
 
 import Showtimes from "./Showtimes";
+import type { Movie } from "./types";
 
 const API_ENDPOINT = `${
   process.env.NODE_ENV === "development" ? "http://localhost:4500" : ""
@@ -45,8 +46,15 @@ const App = () => {
 
   const [allCinemas, setAllCinemas] = useState([]);
   const [isMoviesLoading, setIsMoviesLoading] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [cinemas, setCinemas] = useState(DEFAULT_CINEMAS);
+  const [movieQuery, setMovieQuery] = useState("");
+
+  const moviesToDisplay = movies.filter((m) =>
+    deburr(m.title.toLocaleLowerCase()).includes(
+      deburr(movieQuery.toLocaleLowerCase())
+    )
+  );
 
   useEffect(() => {
     const loadCinemas = async () => {
@@ -143,8 +151,15 @@ const App = () => {
           </ul>
         </form>
       </div>
-      <div className="overflow-x-scroll">
-        <Showtimes movies={movies} isLoading={isMoviesLoading} />
+      <div className="my-4">
+        <input
+          type="text"
+          value={movieQuery}
+          onChange={(e) => setMovieQuery(e.target.value)}
+          placeholder="Filtrer les films"
+          className="text-sm mx-auto my-2 w-full sm:w-1/3 "
+        />
+        <Showtimes movies={moviesToDisplay} isLoading={isMoviesLoading} />
       </div>
       <div className="flex justify-end">
         <button
