@@ -62,9 +62,9 @@ export const findTheaterId = async (name) => {
   return results;
 };
 
-const GET_THEATER_SHOWTIME = gql`
+const GET_THEATER_SHOWTIMES = gql`
   query ($theater: String, $from: DateTime, $to: DateTime) {
-    movieShowtimeList(theater: $theater, from: $from, to: $to) {
+    movieShowtimeList(theater: $theater, from: $from, to: $to, first: 100) {
       totalCount
       edges {
         node {
@@ -97,7 +97,7 @@ const _fetchMovies = async (cinema, date) => {
   const client = new GraphQLClient("https://graph.allocine.fr/v1/public", {
     headers: { Authorization: process.env.ALLOCINE_TOKEN },
   });
-  const data = await client.request(GET_THEATER_SHOWTIME, {
+  const data = await client.request(GET_THEATER_SHOWTIMES, {
     theater: cinemaIds[cinema],
     from: date.toISOString(),
     to: add(date, { days: 1 }).toISOString(),
