@@ -6,5 +6,5 @@ export type Movie = {
   sensCritiqueUrl?: string;
   userRating?: number;
   pressRating?: number;
-  showtimes: Record<string, string[]>;
+  showtimes: Record<string, { startsAt: string; version: string }[]>;
 };

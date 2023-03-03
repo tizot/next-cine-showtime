@@ -113,12 +113,13 @@ const Showtimes = ({
                         <td>{cinema}</td>
                         <td className="text-left">
                           {times
-                            .map((t) =>
-                              formatInTimeZone(
-                                parseISO(t),
-                                "Europe/Paris",
-                                "HH:mm"
-                              )
+                            .map(
+                              (t) =>
+                                `${formatInTimeZone(
+                                  parseISO(t.startsAt),
+                                  "Europe/Paris",
+                                  "HH:mm"
+                                )}${t.version === "DUBBED" ? " (VF)" : ""}`
                             )
                             .join(" - ")}
                         </td>

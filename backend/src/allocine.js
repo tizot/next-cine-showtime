@@ -84,8 +84,9 @@ const GET_THEATER_SHOWTIMES = gql`
               }
             }
           }
-          showtimes(version: [LOCAL, ORIGINAL]) {
+          showtimes {
             startsAt
+            diffusionVersion
           }
         }
       }
@@ -120,9 +121,10 @@ const _fetchMovies = async (cinema, date) => {
       userRating: movie.stats?.userRating?.score,
       pressRating: movie.stats?.pressReview?.score,
       showtimes: {
-        [cinema]: edge.node.showtimes.map((s) =>
-          dateFnsTz.zonedTimeToUtc(s.startsAt, "Europe/Paris")
-        ),
+        [cinema]: edge.node.showtimes.map((s) => ({
+          startsAt: dateFnsTz.zonedTimeToUtc(s.startsAt, "Europe/Paris"),
+          version: s.diffusionVersion,
+        })),
       },
     };
     movies[title] = details;
