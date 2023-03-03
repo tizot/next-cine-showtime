@@ -8,7 +8,7 @@ import {
   isEqual,
   startOfDay,
 } from "date-fns";
-import { deburr, isEqual as _isEqual, range, sortBy } from "lodash";
+import { chain, deburr, isEmpty, range, sortBy } from "lodash";
 
 import Showtimes from "./Showtimes";
 import type { Movie } from "./types";
@@ -39,6 +39,17 @@ const formatDate = (date: Date) => {
   );
 };
 
+function dropDubbedShowtimes(movie: Movie): Movie | null {
+  const showtimesByCinema: Movie["showtimes"] = chain(movie.showtimes)
+    .mapValues((showtimes) => showtimes.filter((s) => s.version !== "DUBBED"))
+    .pickBy((showtimes) => showtimes.length > 0)
+    .value();
+
+  return isEmpty(showtimesByCinema)
+    ? null
+    : { ...movie, showtimes: showtimesByCinema };
+}
+
 const App = () => {
   const today = startOfDay(new Date());
   const dates = range(0, 8).map((i) => add(today, { days: i }));
@@ -49,12 +60,18 @@ const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cinemas, setCinemas] = useState(DEFAULT_CINEMAS);
   const [movieQuery, setMovieQuery] = useState("");
+  const [hideDubbedShowtimes, setHideDubbedShowtimes] = useState(false);
 
-  const moviesToDisplay = movies.filter((m) =>
-    deburr(m.title.toLocaleLowerCase()).includes(
-      deburr(movieQuery.toLocaleLowerCase())
+  const moviesToDisplay = chain(movies)
+    .filter((m) =>
+      deburr(m.title.toLocaleLowerCase()).includes(
+        deburr(movieQuery.toLocaleLowerCase())
+      )
     )
-  );
+    .map((movie) => (hideDubbedShowtimes ? dropDubbedShowtimes(movie) : movie))
+    .compact()
+    .value();
+  console.log({ moviesToDisplay });
 
   useEffect(() => {
     const loadCinemas = async () => {
@@ -152,13 +169,28 @@ const App = () => {
         </form>
       </div>
       <div className="my-4">
-        <input
-          type="text"
-          value={movieQuery}
-          onChange={(e) => setMovieQuery(e.target.value)}
-          placeholder="Filtrer les films"
-          className="text-sm mx-auto my-2 w-full sm:w-1/3 "
-        />
+        <div className="grid md:grid-cols-3 md:gap-4 sm:grid-cols-1 sm:gap-2">
+          <div>
+            <input
+              type="text"
+              value={movieQuery}
+              onChange={(e) => setMovieQuery(e.target.value)}
+              placeholder="Filtrer les films"
+              className="text-sm my-2 rounded-md w-full"
+            />
+          </div>
+          <div className="flex items-center gap-1">
+            <input
+              id="hide-dubbed"
+              type="checkbox"
+              value={hideDubbedShowtimes ? "" : "on"}
+              onChange={(e) => setHideDubbedShowtimes(e.target.checked)}
+            />
+            <label htmlFor="hide-dubbed" className="inline-flex items-center">
+              Masquer les films doublés
+            </label>
+          </div>
+        </div>
         <Showtimes movies={moviesToDisplay} isLoading={isMoviesLoading} />
       </div>
       <div className="flex justify-end">
