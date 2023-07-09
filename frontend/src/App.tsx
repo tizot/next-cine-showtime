@@ -12,12 +12,12 @@ import { chain, deburr, isEmpty, range, sortBy } from "lodash";
 
 import Showtimes from "./Showtimes";
 import type { Movie } from "./types";
+import useStoredArray from "./useStoredArray";
 
 const API_ENDPOINT = `${
   process.env.NODE_ENV === "development" ? "http://localhost:4500" : ""
 }/api`;
 const DEFAULT_CINEMAS = [
-  "Luminor HdV",
   "Majestic Bastille",
   "mk2 Beaumarchais",
   "mk2 Saint-Antoine",
@@ -58,7 +58,10 @@ const App = () => {
   const [allCinemas, setAllCinemas] = useState([]);
   const [isMoviesLoading, setIsMoviesLoading] = useState(false);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [cinemas, setCinemas] = useState(DEFAULT_CINEMAS);
+  const [cinemas, setCinemas] = useStoredArray(
+    "selected-cinemas",
+    DEFAULT_CINEMAS
+  );
   const [movieQuery, setMovieQuery] = useState("");
   const [hideDubbedShowtimes, setHideDubbedShowtimes] = useState(false);
 
@@ -71,7 +74,6 @@ const App = () => {
     .map((movie) => (hideDubbedShowtimes ? dropDubbedShowtimes(movie) : movie))
     .compact()
     .value();
-  console.log({ moviesToDisplay });
 
   useEffect(() => {
     const loadCinemas = async () => {
