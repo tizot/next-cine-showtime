@@ -11,7 +11,7 @@ import { search } from "./sens-critique/index.js";
 const cinemaIds = {
   "mk2 Beaumarchais": "VGhlYXRlcjpDMDE0MA==",
   "mk2 Saint-Antoine": "VGhlYXRlcjpDMDA0MA==",
-  "mk2 Nation": " VGhlYXRlcjpDMDE0NA==",
+  "mk2 Nation": "VGhlYXRlcjpDMDE0NA==",
   "Majestic Bastille": "VGhlYXRlcjpDMDEzOQ==",
   "UGC Lyon Bastille": "VGhlYXRlcjpDMDE0Ng==",
   "UGC Les Halles": "VGhlYXRlcjpDMDE1OQ==",
@@ -106,7 +106,7 @@ const _fetchMovies = async (cinema, date) => {
 
   const movies = {};
   for (const edge of data.movieShowtimeList.edges) {
-    if (edge.node.showtimes.length === 0) {
+    if (edge.node.showtimes.length === 0 || edge.node.movie == null) {
       continue;
     }
 
