@@ -21,6 +21,7 @@ const DEFAULT_CINEMAS = [
   "Majestic Bastille",
   "mk2 Beaumarchais",
   "mk2 Saint-Antoine",
+  "mk2 Nation",
 ];
 
 const formatDate = (date: Date) => {
@@ -130,6 +131,7 @@ const App = () => {
 
   const handleForceRefresh = async (e: React.MouseEvent<HTMLButtonElement>) => {
     await fetch(`${API_ENDPOINT}/reset-caches`, { method: "POST" });
+    setCinemas(DEFAULT_CINEMAS);
     loadMovies();
   };
 
