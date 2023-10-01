@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Showtimes from '$lib/Showtimes.svelte';
+  import Showtimes from '$lib/components/Showtimes.svelte';
   import { dropDubbedShowtimes } from '$lib/utils';
   import type { PageData } from './$types';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
