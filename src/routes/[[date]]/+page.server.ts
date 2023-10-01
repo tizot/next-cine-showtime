@@ -1,9 +1,8 @@
-import type { Actions, PageServerLoad, RouteParams } from './$types';
+import type { PageServerLoad, RouteParams } from './$types';
 import { fetchAllMoviesSorted } from '$lib/server';
 import { DEFAULT_THEATERS, theaterIds } from '$lib/theaters';
 import { startOfToday } from 'date-fns';
 import type { Cookies } from '@sveltejs/kit';
-import { COOKIE_THEATERS_KEY } from '$lib/cookies';
 import type { TheaterId } from '$lib/types';
 import { sortBy } from 'lodash';
 
@@ -15,11 +14,16 @@ function getDate(params: RouteParams) {
   }
 }
 
+const COOKIE_THEATERS_KEY = 'theaters';
+
 function getTheatersFromUrl(url: URL, cookies: Cookies) {
   const theaters = url.searchParams
     .getAll('theater')
     .filter((t): t is TheaterId => t in theaterIds);
-  if (theaters.length === 0) return null;
+  if (theaters.length === 0) {
+    cookies.delete(COOKIE_THEATERS_KEY);
+    return null;
+  }
   cookies.set(COOKIE_THEATERS_KEY, JSON.stringify(theaters));
   return theaters;
 }

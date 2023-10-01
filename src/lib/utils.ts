@@ -1,6 +1,6 @@
 import { intlFormat } from 'date-fns';
 import { toSeconds, type Duration } from 'iso8601-duration';
-import type { Movie } from './types';
+import type { Movie, TheaterId } from './types';
 import { chain, isEmpty } from 'lodash';
 
 export function formatDate(date: Date) {
@@ -22,10 +22,16 @@ export function formatDuration(duration: Duration, withSeconds = false) {
   return `${hours}h ${minutes}m`;
 }
 
-export function dropDubbedShowtimes(movie: Movie): Movie | null {
+export function filterShowtimes(
+  movie: Movie,
+  theaters: Array<TheaterId>,
+  dropDubbedShowtimes: boolean,
+) {
   const showtimesByTheater: Movie['showtimes'] = chain(movie.showtimes)
-    .mapValues((showtimes) => showtimes.filter((s) => s.version !== 'DUBBED'))
-    .pickBy((showtimes) => showtimes.length > 0)
+    .mapValues((showtimes) =>
+      dropDubbedShowtimes ? showtimes.filter((s) => s.version !== 'DUBBED') : showtimes,
+    )
+    .pickBy((showtimes, theater) => theaters.includes(theater as TheaterId) && showtimes.length > 0)
     .value();
 
   return isEmpty(showtimesByTheater) ? null : { ...movie, showtimes: showtimesByTheater };

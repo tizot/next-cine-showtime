@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Showtimes from '$lib/components/Showtimes.svelte';
   import LoadingBar from '$lib/components/LoadingBar.svelte';
-  import { dropDubbedShowtimes } from '$lib/utils';
-  import type { PageData } from './$types';
+  import Showtimes from '$lib/components/Showtimes.svelte';
+  import { filterShowtimes } from '$lib/utils';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
-  import { chain, deburr, range } from 'lodash';
+  import { chain, deburr, pick, range } from 'lodash';
+  import type { PageData } from './$types';
 
   export let data: PageData;
   const today = startOfToday();
@@ -20,8 +20,10 @@
 
   $: activeDate = data.activeDate;
   $: movies = chain(data.movies)
-    .filter((m) => deburr(m.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())))
-    .map((movie) => (hideDubbedShowtimes ? dropDubbedShowtimes(movie) : movie))
+    .filter((movie) =>
+      deburr(movie.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())),
+    )
+    .map((movie) => filterShowtimes(movie, activeTheaters, hideDubbedShowtimes))
     .compact()
     .value();
 </script>
