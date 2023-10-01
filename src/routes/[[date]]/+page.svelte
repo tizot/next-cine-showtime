@@ -9,7 +9,7 @@
   const menuDates = range(0, 8).map((i) => addDays(today, i));
 
   $: activeDate = data.activeDate;
-  $: console.log(data.movies);
+  $: movies = data.movies;
 </script>
 
 <header class="container">
@@ -28,6 +28,15 @@
       </a>
     {/each}
   </div>
+
+  <table>
+    <thead><tr><th scope="col">Titre</th></tr></thead>
+    <tbody
+      >{#each Object.values(movies) as movie}
+        <tr><td>{movie.title}</td></tr>
+      {/each}</tbody
+    >
+  </table>
 </main>
 
 <footer class="container">Reset cache</footer>

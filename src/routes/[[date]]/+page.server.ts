@@ -1,9 +1,10 @@
-import { fetchMovies } from '$lib/server/allocine/movies';
-import { startOfToday } from 'date-fns';
 import type { PageServerLoad } from './$types';
+import { fetchAllMovies } from '$lib/server';
+import { DEFAULT_THEATERS } from '$lib/theaters';
 
 export const load: PageServerLoad = ({ params }) => {
-  const movies = fetchMovies('mk2 Nation', startOfToday());
+  const activeDate = params.date ? new Date(params.date) : new Date();
+  const movies = fetchAllMovies(DEFAULT_THEATERS, activeDate);
 
-  return { activeDate: params.date ? new Date(params.date) : new Date(), movies };
+  return { activeDate, movies };
 };
