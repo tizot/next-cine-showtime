@@ -13,7 +13,7 @@ export type Movie = {
   sensCritiqueUrl?: string | null;
   userRating?: number | null;
   pressRating?: number | null;
-  showtimes: Partial<Record<TheaterId, Array<Showtime>>>;
+  showtimes: Record<string, Array<Showtime>>;
 };
 
 type Title = string;
