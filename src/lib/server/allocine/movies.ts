@@ -8,6 +8,7 @@ import { zonedTimeToUtc } from 'date-fns-tz';
 import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
 import { ALLOCINE_TOKEN } from '$env/static/private';
+import { cache } from '../cache';
 
 type Title = string;
 type Movies = Record<Title, Movie>;
@@ -75,7 +76,7 @@ type GqlTheaterShowtimes = {
   };
 };
 
-export async function fetchMovies(theater: TheaterId, date: Date) {
+export async function _fetchMovies(theater: TheaterId, date: Date) {
   const client = new GraphQLClient('https://graph.allocine.fr/v1/public', {
     headers: { Authorization: `Bearer ${ALLOCINE_TOKEN}` }, // TODO: check that env is properly set
   });
@@ -112,3 +113,5 @@ export async function fetchMovies(theater: TheaterId, date: Date) {
   }
   return movies;
 }
+
+export const fetchMovies = cache(_fetchMovies);
