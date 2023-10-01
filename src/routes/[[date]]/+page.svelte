@@ -3,14 +3,18 @@
   import type { PageData } from './$types';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
-  import { range } from 'lodash';
+  import { chain, deburr, range } from 'lodash';
 
   export let data: PageData;
   const today = startOfToday();
   const menuDates = range(0, 8).map((i) => addDays(today, i));
 
+  let query = '';
+
   $: activeDate = data.activeDate;
-  $: movies = data.movies;
+  $: movies = chain(data.movies)
+    .filter((m) => deburr(m.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())))
+    .value();
 </script>
 
 <header class="container">
@@ -18,17 +22,25 @@
 </header>
 
 <main class="container">
-  <div class="menu">
-    {#each menuDates as d}
-      <a
-        href={format(d, 'yyyy-MM-dd')}
-        class="menu-link secondary"
-        class:active={isSameDay(activeDate, d)}
-      >
-        {format(d, 'PPPP', { locale: fr })}
-      </a>
-    {/each}
-  </div>
+  <section>
+    <div class="menu">
+      {#each menuDates as d}
+        <a
+          href={format(d, 'yyyy-MM-dd')}
+          class="menu-link secondary"
+          class:active={isSameDay(activeDate, d)}
+        >
+          {format(d, 'PPPP', { locale: fr })}
+        </a>
+      {/each}
+    </div>
+  </section>
+
+  <form>
+    <div class="grid">
+      <input type="text" bind:value={query} placeholder="Filtrer les films" />
+    </div>
+  </form>
 
   <Showtimes {movies} />
 </main>
