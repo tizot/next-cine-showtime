@@ -1,4 +1,4 @@
-import type { PageServerLoad, RouteParams } from './$types';
+import type { Actions, PageServerLoad, RouteParams } from './$types';
 import { fetchAllMoviesSorted } from '$lib/server';
 import { DEFAULT_THEATERS, theaterIds } from '$lib/theaters';
 import { startOfToday } from 'date-fns';
@@ -15,6 +15,15 @@ function getDate(params: RouteParams) {
   }
 }
 
+function getTheatersFromUrl(url: URL, cookies: Cookies) {
+  const theaters = url.searchParams
+    .getAll('theater')
+    .filter((t): t is TheaterId => t in theaterIds);
+  if (theaters.length === 0) return null;
+  cookies.set(COOKIE_THEATERS_KEY, JSON.stringify(theaters));
+  return theaters;
+}
+
 function getTheatersFromCookie(cookies: Cookies) {
   const encodedTheaters = cookies.get(COOKIE_THEATERS_KEY);
   try {
@@ -28,13 +37,13 @@ function getTheatersFromCookie(cookies: Cookies) {
   }
 }
 
-export const load: PageServerLoad = ({ params, cookies }) => {
+export const load: PageServerLoad = ({ params, cookies, url }) => {
   const activeDate = getDate(params);
-  const movies = fetchAllMoviesSorted(DEFAULT_THEATERS, activeDate);
   const allTheaters = sortBy(Object.keys(theaterIds) as Array<TheaterId>, (s) =>
     s.toLocaleLowerCase(),
   );
-  const activeTheaters = getTheatersFromCookie(cookies);
+  const activeTheaters = getTheatersFromUrl(url, cookies) ?? getTheatersFromCookie(cookies);
+  const movies = fetchAllMoviesSorted(activeTheaters, activeDate);
 
   return { activeDate, movies, allTheaters, activeTheaters };
 };

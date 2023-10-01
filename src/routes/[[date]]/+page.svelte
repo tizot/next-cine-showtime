@@ -11,6 +11,7 @@
   const today = startOfToday();
   const menuDates = range(0, 8).map((i) => addDays(today, i));
 
+  let form: HTMLFormElement;
   let query = '';
   let hideDubbedShowtimes = true;
   let allTheaters = data.allTheaters;
@@ -50,11 +51,16 @@
     </div>
   </section>
 
-  <form method="GET">
+  <form method="GET" bind:this={form} data-sveltekit-noscroll data-sveltekit-keepfocus>
     <div class="theaters-form">
       {#each allTheaters as theater}
         <label>
-          <input type="checkbox" bind:group={activeTheaters} value={theater} name="theater" />
+          <input
+            type="checkbox"
+            bind:group={activeTheaters}
+            value={theater}
+            name="theater"
+            on:change={() => form.requestSubmit()} />
           {theater}
         </label>
       {/each}
