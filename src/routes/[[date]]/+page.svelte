@@ -5,7 +5,7 @@
   import { filterShowtimes } from '$lib/utils';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
-  import { chain, deburr, pick, range } from 'lodash';
+  import { chain, deburr, range } from 'lodash';
   import type { PageData } from './$types';
 
   export let data: PageData;

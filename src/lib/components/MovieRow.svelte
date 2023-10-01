@@ -1,6 +1,6 @@
 <script lang="ts">
   import { size } from 'lodash';
-  import type { Movie } from './types';
+  import type { Movie } from '../types';
   import { formatInTimeZone } from 'date-fns-tz';
 
   export let movie: Movie;
@@ -11,12 +11,13 @@
   {#each Object.entries(movie.showtimes) as [theater, times], idx}
     <tr class="movie">
       {#if idx === 0}
-        <td rowspan={theatersCount}
-          ><a
+        <td rowspan={theatersCount}>
+          <a
             href="https://www.allocine.fr/film/fichefilm_gen_cfilm={movie.allocineId}.html"
-            target="_blank">{movie.title}</a
-          ></td
-        >
+            target="_blank">
+            {movie.title}
+          </a>
+        </td>
         <td rowspan={theatersCount}>{movie.duration}</td>
         <td rowspan={theatersCount}>
           {#if movie.sensCritiqueRating}
@@ -30,8 +31,7 @@
           {#if movie.userRating}
             <a
               href={`https://www.allocine.fr/film/fichefilm_gen_cfilm=${movie.allocineId}.html`}
-              target="_blank"
-            >
+              target="_blank">
               {movie.userRating}
             </a>
           {:else}
@@ -42,8 +42,7 @@
           {#if movie.pressRating}
             <a
               href={`https://www.allocine.fr/film/fichefilm-${movie.allocineId}/critiques/presse/`}
-              target="_blank"
-            >
+              target="_blank">
               {movie.pressRating}
             </a>
           {:else}
@@ -52,16 +51,16 @@
         </td>
       {/if}
       <td>{theater}</td>
-      <td
-        >{times
+      <td>
+        {times
           .map(
             (t) =>
               `${formatInTimeZone(t.startsAt, 'Europe/Paris', 'HH:mm')}${
                 t.version === 'DUBBED' ? ' (VF)' : ''
               }`,
           )
-          .join(' - ')}</td
-      >
+          .join(' - ')}
+      </td>
     </tr>
   {/each}
 </tbody>
