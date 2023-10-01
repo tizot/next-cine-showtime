@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import { addDays, format, startOfToday } from 'date-fns';
+  import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
   import { range } from 'lodash';
 
@@ -8,27 +8,44 @@
   const today = startOfToday();
   const menuDates = range(0, 8).map((i) => addDays(today, i));
 
-  $: date = data.date;
+  $: activeDate = data.activeDate;
+  $: console.log(data.movies);
 </script>
 
-<main class="container">
-  <h1>Films pour le {format(date, 'PPPP', { locale: fr })}</h1>
+<header class="container">
+  <h1>Films pour le {format(activeDate, 'PPPP', { locale: fr })}</h1>
+</header>
 
-  <form>
-    <div class="menu">
-      {#each menuDates as d}
-        <label for={d.toISOString()}
-          ><input type="checkbox" id={d.toISOString()} />
-          {format(d, 'PPPP', { locale: fr })}</label
-        >
-      {/each}
-    </div>
-  </form>
+<main class="container">
+  <div class="menu">
+    {#each menuDates as d}
+      <a
+        href={format(d, 'yyyy-MM-dd')}
+        class="menu-link secondary"
+        class:active={isSameDay(activeDate, d)}
+      >
+        {format(d, 'PPPP', { locale: fr })}
+      </a>
+    {/each}
+  </div>
 </main>
 
 <footer class="container">Reset cache</footer>
 
 <style>
+  header {
+    margin-top: 2em;
+  }
+
+  a.menu-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  a.menu-link.active {
+    color: var(--color-contrast);
+  }
+
   @media (min-width: 992px) {
     .menu {
       display: grid;
