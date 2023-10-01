@@ -13,6 +13,8 @@
 
   let query = '';
   let hideDubbedShowtimes = true;
+  let allTheaters = data.allTheaters;
+  let activeTheaters = data.activeTheaters;
 
   $: activeDate = data.activeDate;
   $: movies = chain(data.movies)
@@ -36,7 +38,7 @@
 
 <main class="container">
   <section>
-    <div class="menu">
+    <div class="dates-menu">
       {#each menuDates as d}
         <a
           href={format(d, 'yyyy-MM-dd')}
@@ -47,6 +49,17 @@
       {/each}
     </div>
   </section>
+
+  <form method="GET">
+    <div class="theaters-form">
+      {#each allTheaters as theater}
+        <label>
+          <input type="checkbox" bind:group={activeTheaters} value={theater} name="theater" />
+          {theater}
+        </label>
+      {/each}
+    </div>
+  </form>
 
   <form>
     <div class="grid" style:align-items="baseline">
@@ -68,20 +81,28 @@
     margin-top: 2em;
   }
 
-  a.menu-link {
+  .dates-menu a {
     display: block;
     text-decoration: none;
   }
 
-  a.menu-link.active {
+  .dates-menu a.active {
     color: var(--color-contrast);
   }
 
   @media (min-width: 992px) {
-    .menu {
+    .dates-menu {
       display: grid;
       grid-template-rows: repeat(4, 1fr);
       grid-auto-flow: column;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+    }
+
+    .theaters-form {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: row;
       grid-column-gap: 0px;
       grid-row-gap: 0px;
     }
