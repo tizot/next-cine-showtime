@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import Showtimes from '$lib/components/Showtimes.svelte';
+  import LoadingBar from '$lib/components/LoadingBar.svelte';
   import { dropDubbedShowtimes } from '$lib/utils';
   import type { PageData } from './$types';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
@@ -33,8 +34,12 @@
   </title>
 </svelte:head>
 
+<LoadingBar />
+
 <header class="container">
-  <h1>Films pour le {format(activeDate, 'PPPP', { locale: fr })}</h1>
+  <h1>
+    Films pour le {format(activeDate, 'PPPP', { locale: fr })}
+  </h1>
 </header>
 
 <main class="container">
