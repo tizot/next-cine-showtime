@@ -9,6 +9,7 @@ class SensCritiqueAuth {
 
   constructor(private email: string, private password: string) {
     this._token = null;
+    this.refresh();
   }
 
   async getToken() {
@@ -17,8 +18,8 @@ class SensCritiqueAuth {
     return this._token;
   }
 
-  refresh() {
-    this._refresh();
+  async refresh() {
+    await this._refresh();
   }
 
   async _refresh(force = false) {
