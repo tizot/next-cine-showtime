@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, zip } from 'lodash';
+import { cloneDeep, forEach, orderBy, zip } from 'lodash';
 import { theaterIds } from '../theaters';
 import type { Movies, TheaterId } from '../types';
 import { fetchMovies } from './allocine/movies';
@@ -42,4 +42,15 @@ export async function fetchAllMovies(theaters: Array<TheaterId>, date: Date) {
   });
 
   return movies;
+}
+
+export async function fetchAllMoviesSorted(theaters: Array<TheaterId>, date: Date) {
+  const moviesMap = await fetchAllMovies(theaters, date);
+  return orderBy(
+    Object.values(moviesMap),
+    (m) => {
+      return [m.sensCritiqueRating ?? 0, m.userRating ?? 0, m.pressRating ?? 0];
+    },
+    ['desc', 'desc', 'desc'],
+  );
 }
