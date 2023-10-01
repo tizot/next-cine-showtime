@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Showtimes from '$lib/Showtimes.svelte';
   import type { PageData } from './$types';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
@@ -29,14 +30,7 @@
     {/each}
   </div>
 
-  <table>
-    <thead><tr><th scope="col">Titre</th></tr></thead>
-    <tbody
-      >{#each Object.values(movies) as movie}
-        <tr><td>{movie.title}</td></tr>
-      {/each}</tbody
-    >
-  </table>
+  <Showtimes {movies} />
 </main>
 
 <footer class="container">Reset cache</footer>
