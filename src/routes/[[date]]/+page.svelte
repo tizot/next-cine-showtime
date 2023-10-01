@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Showtimes from '$lib/Showtimes.svelte';
   import { dropDubbedShowtimes } from '$lib/utils';
   import type { PageData } from './$types';
@@ -21,6 +22,14 @@
     .value();
 </script>
 
+<svelte:head>
+  <title>
+    Ma prochaine séance | Films pour le {format($page.data.activeDate, 'PPPP', {
+      locale: fr,
+    })}
+  </title>
+</svelte:head>
+
 <header class="container">
   <h1>Films pour le {format(activeDate, 'PPPP', { locale: fr })}</h1>
 </header>
@@ -32,8 +41,7 @@
         <a
           href={format(d, 'yyyy-MM-dd')}
           class="menu-link secondary"
-          class:active={isSameDay(activeDate, d)}
-        >
+          class:active={isSameDay(activeDate, d)}>
           {format(d, 'PPPP', { locale: fr })}
         </a>
       {/each}
