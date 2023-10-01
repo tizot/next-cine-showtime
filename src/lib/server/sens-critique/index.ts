@@ -39,7 +39,7 @@ const _clean = (s: string) => {
     .replace(/\s/g, '');
 };
 
-export async function _search(title: string, year: number) {
+export async function _fetchSensCritiqueRating(title: string, year: number) {
   const token = await auth.getToken();
   const client = new GraphQLClient('https://gql.senscritique.com/graphql', {
     headers: { Authorization: token },
@@ -64,4 +64,4 @@ export async function _search(title: string, year: number) {
   return { rating, url: match['url'] };
 }
 
-export const search = cache(_search);
+export const fetchSensCritiqueRating = cache(_fetchSensCritiqueRating);

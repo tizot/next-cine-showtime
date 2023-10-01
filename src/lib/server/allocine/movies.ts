@@ -1,4 +1,4 @@
-import type { DiffusionVersion, Movie, TheaterId } from '$lib/types';
+import type { DiffusionVersion, Movies, TheaterId } from '$lib/types';
 import { GraphQLClient, gql } from 'graphql-request';
 import { parse as parseGql } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
@@ -9,9 +9,6 @@ import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
 import { ALLOCINE_TOKEN } from '$env/static/private';
 import { cache } from '../cache';
-
-type Title = string;
-type Movies = Record<Title, Movie>;
 
 const GET_THEATER_SHOWTIMES = gql`
   query ($theater: String, $from: DateTime, $to: DateTime) {

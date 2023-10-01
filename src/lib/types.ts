@@ -15,3 +15,6 @@ export type Movie = {
   pressRating?: number | null;
   showtimes: Partial<Record<TheaterId, Array<Showtime>>>;
 };
+
+type Title = string;
+export type Movies = Record<Title, Movie>;
