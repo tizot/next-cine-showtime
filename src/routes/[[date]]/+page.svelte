@@ -2,9 +2,8 @@
   import { page } from '$app/stores';
   import LoadingBar from '$lib/components/LoadingBar.svelte';
   import Showtimes from '$lib/components/Showtimes.svelte';
-  import { filterShowtimes } from '$lib/utils';
+  import { filterShowtimes, formatDate } from '$lib/utils';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
-  import fr from 'date-fns/locale/fr';
   import { deburr, range } from 'lodash-es';
   import type { PageData } from './$types';
   import type { Movie } from '$lib/types';
@@ -30,9 +29,7 @@
 
 <svelte:head>
   <title>
-    Ma prochaine séance | Films pour le {format($page.data.activeDate, 'PPPP', {
-      locale: fr,
-    })}
+    Ma prochaine séance | Films pour le {formatDate($page.data.activeDate)}
   </title>
 </svelte:head>
 
@@ -40,7 +37,7 @@
 
 <header class="container">
   <h1>
-    Films pour le {format(activeDate, 'PPPP', { locale: fr })}
+    Films pour le {formatDate(activeDate)}
   </h1>
 </header>
 
@@ -52,7 +49,7 @@
           href={format(d, 'yyyy-MM-dd')}
           class="menu-link secondary"
           class:active={isSameDay(activeDate, d)}>
-          {format(d, 'PPPP', { locale: fr })}
+          {formatDate(d)}
         </a>
       {/each}
     </div>
