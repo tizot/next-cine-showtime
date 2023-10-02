@@ -34,6 +34,7 @@ COPY package.json .
 EXPOSE 4500
 ENV PORT=4500
 ENV NODE_ENV=production
+ENV ORIGIN=https://cine.camillemasset.fr
 
 CMD ["node", "build"]
 
