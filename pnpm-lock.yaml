@@ -1,6 +1,12 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  cron:
+    specifier: ^3.0.0
+    version: 3.0.0
+  cronstrue:
+    specifier: ^2.32.0
+    version: 2.32.0
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
@@ -589,6 +595,10 @@ packages:
     resolution: {integrity: sha512-Vrjz5N5Ia4SEzWWgIVwnHNEnb1UE1XMkvY5DGXrAeOGE9imk0hgTHh5GyDjLDJi9OTCn9oo9dXH1uToK1VRfrg==}
     dev: true
 
+  /@types/luxon@3.3.2:
+    resolution: {integrity: sha512-l5cpE57br4BIjK+9BSkFBOsWtwv6J9bJpC7gdXIzZyI0vuKvNTk0wZZrkQxMGsUAuGW9+WMNWF2IJMD7br2yeQ==}
+    dev: false
+
   /@types/node@20.8.0:
     resolution: {integrity: sha512-LzcWltT83s1bthcvjBmiBvGJiiUe84NWRHkw+ZV6Fr41z2FbIzvc815dk2nQ3RAKMuN2fkenM/z3Xv2QzEpYxQ==}
     dev: true
@@ -985,6 +995,18 @@ packages:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
     dev: true
+
+  /cron@3.0.0:
+    resolution: {integrity: sha512-2aFNFH+kwHUlqJlc1M4sP6/l+gZjBYaoHrhPRkTkg80DlA68ueyhRDfWnMAMulg/+mE9F8cGtfwL8wedr4jfqQ==}
+    dependencies:
+      '@types/luxon': 3.3.2
+      luxon: 3.3.0
+    dev: false
+
+  /cronstrue@2.32.0:
+    resolution: {integrity: sha512-dmNflOCNJL6lZEj0dp2YhGIPY83VTjFue6d9feFhnNtrER6mAjBrUvSgK95j3IB/xNGpLjaZDIDG6ACKTZr9Yw==}
+    hasBin: true
+    dev: false
 
   /cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
@@ -1662,6 +1684,11 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /luxon@3.3.0:
+    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /magic-string@0.27.0:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
