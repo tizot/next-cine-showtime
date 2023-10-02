@@ -71,7 +71,7 @@
   }
 
   tr {
-    text-wrap: nowrap;
+    white-space: nowrap;
   }
 
   td > a {
