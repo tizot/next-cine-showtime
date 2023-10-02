@@ -10,7 +10,9 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "format": "prettier --plugin-search-dir . --write .",
+    "clean:build": "rm -rf build",
+    "clean:all": "pnpm run clean:build && rm -rf node_modules"
   },
   "devDependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
