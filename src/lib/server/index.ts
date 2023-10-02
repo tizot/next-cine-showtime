@@ -54,3 +54,6 @@ export async function fetchAllMoviesSorted(theaters: Array<TheaterId>, date: Dat
     ['desc', 'desc', 'desc'],
   );
 }
+
+process.on('SIGINT', () => process.exit(0));
+process.on('SIGTERM', () => process.exit(0));
