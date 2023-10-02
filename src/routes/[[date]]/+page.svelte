@@ -84,7 +84,11 @@
   <Showtimes movies={filteredMovies} />
 </main>
 
-<footer class="container">Reset cache</footer>
+<footer class="container">
+  <form method="POST">
+    <button class="secondary reset">Reset cache</button>
+  </form>
+</footer>
 
 <style>
   header {
@@ -116,5 +120,11 @@
       grid-column-gap: 0px;
       grid-row-gap: 0px;
     }
+  }
+
+  .reset {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 0;
   }
 </style>

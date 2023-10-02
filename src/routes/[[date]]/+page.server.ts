@@ -2,9 +2,11 @@ import type { PageServerLoad, RouteParams } from './$types';
 import { fetchAllMoviesSorted } from '$lib/server';
 import { DEFAULT_THEATERS, theaterIds } from '$lib/theaters';
 import { startOfToday } from 'date-fns';
-import type { Cookies } from '@sveltejs/kit';
+import type { Actions, Cookies } from '@sveltejs/kit';
 import type { TheaterId } from '$lib/types';
 import { sortBy } from 'lodash-es';
+import { fetchMovies } from '$lib/server/allocine/movies';
+import { fetchSensCritiqueRating } from '$lib/server/sens-critique';
 
 function getDate(params: RouteParams) {
   try {
@@ -50,4 +52,11 @@ export const load: PageServerLoad = ({ params, cookies, url }) => {
   const movies = fetchAllMoviesSorted(activeTheaters, activeDate);
 
   return { activeDate, movies, allTheaters, activeTheaters };
+};
+
+export const actions: Actions = {
+  default: () => {
+    fetchMovies.evictAll();
+    fetchSensCritiqueRating.evictAll();
+  },
 };

@@ -19,6 +19,7 @@ export const cache = <F extends (...args: any[]) => any>(fn: F, ttlMilliseconds 
     return result;
   };
   memoized.evictAll = () => {
+    console.log(`Evicting cache for ${fn.name}`);
     store = {};
   };
 
