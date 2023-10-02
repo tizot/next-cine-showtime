@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { size } from 'lodash';
+  import { size } from 'lodash-es';
   import type { Movie } from '$lib/types';
   import MovieRow from './MovieRow.svelte';
 

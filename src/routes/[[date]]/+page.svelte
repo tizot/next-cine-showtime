@@ -5,8 +5,9 @@
   import { filterShowtimes } from '$lib/utils';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
   import fr from 'date-fns/locale/fr';
-  import { chain, deburr, range } from 'lodash';
+  import { deburr, range } from 'lodash-es';
   import type { PageData } from './$types';
+  import type { Movie } from '$lib/types';
 
   export let data: PageData;
   const today = startOfToday();
@@ -19,13 +20,12 @@
   let activeTheaters = data.activeTheaters;
 
   $: activeDate = data.activeDate;
-  $: movies = chain(data.movies)
-    .filter((movie) =>
-      deburr(movie.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())),
-    )
+  $: movies = data.movies
     .map((movie) => filterShowtimes(movie, activeTheaters, hideDubbedShowtimes))
-    .compact()
-    .value();
+    .filter((movie): movie is Movie => movie != null);
+  $: filteredMovies = movies.filter((movie) =>
+    deburr(movie.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())),
+  );
 </script>
 
 <svelte:head>
@@ -84,7 +84,7 @@
     </div>
   </form>
 
-  <Showtimes {movies} />
+  <Showtimes movies={filteredMovies} />
 </main>
 
 <footer class="container">Reset cache</footer>

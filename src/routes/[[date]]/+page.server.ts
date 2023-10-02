@@ -4,7 +4,7 @@ import { DEFAULT_THEATERS, theaterIds } from '$lib/theaters';
 import { startOfToday } from 'date-fns';
 import type { Cookies } from '@sveltejs/kit';
 import type { TheaterId } from '$lib/types';
-import { sortBy } from 'lodash';
+import { sortBy } from 'lodash-es';
 
 function getDate(params: RouteParams) {
   try {

@@ -1,5 +1,5 @@
 import { GraphQLClient, gql } from 'graphql-request';
-import { deburr } from 'lodash';
+import { deburr } from 'lodash-es';
 import auth from './auth';
 import { cache } from '../cache';
 

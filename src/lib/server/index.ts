@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, orderBy, zip } from 'lodash';
+import { cloneDeep, forEach, orderBy, zip } from 'lodash-es';
 import { theaterIds } from '../theaters';
 import type { Movies, TheaterId } from '../types';
 import { fetchMovies } from './allocine/movies';

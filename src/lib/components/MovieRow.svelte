@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { size } from 'lodash';
+  import { size } from 'lodash-es';
   import type { Movie } from '../types';
   import { formatInTimeZone } from 'date-fns-tz';
 

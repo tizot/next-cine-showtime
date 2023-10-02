@@ -1,7 +1,7 @@
 import { intlFormat } from 'date-fns';
 import { toSeconds, type Duration } from 'iso8601-duration';
 import type { Movie, TheaterId } from './types';
-import { chain, isEmpty } from 'lodash';
+import { isEmpty, mapValues, pickBy } from 'lodash-es';
 
 export function formatDate(date: Date) {
   return intlFormat(
@@ -27,12 +27,13 @@ export function filterShowtimes(
   theaters: Array<TheaterId>,
   dropDubbedShowtimes: boolean,
 ) {
-  const showtimesByTheater: Movie['showtimes'] = chain(movie.showtimes)
-    .mapValues((showtimes) =>
-      dropDubbedShowtimes ? showtimes.filter((s) => s.version !== 'DUBBED') : showtimes,
-    )
-    .pickBy((showtimes, theater) => theaters.includes(theater as TheaterId) && showtimes.length > 0)
-    .value();
+  const versionFilteredShowtimes = dropDubbedShowtimes
+    ? mapValues(movie.showtimes, (showtimes) => showtimes.filter((s) => s.version !== 'DUBBED'))
+    : movie.showtimes;
+  const showtimesByTheater: Movie['showtimes'] = pickBy(
+    versionFilteredShowtimes,
+    (showtimes, theater) => theaters.includes(theater as TheaterId) && showtimes.length > 0,
+  );
 
   return isEmpty(showtimesByTheater) ? null : { ...movie, showtimes: showtimesByTheater };
 }
