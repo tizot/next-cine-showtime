@@ -10,6 +10,9 @@
 
 <style>
   .loading-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
     height: 4px;
     background-color: rgba(5, 114, 206, 0.2);
     width: 100%;
