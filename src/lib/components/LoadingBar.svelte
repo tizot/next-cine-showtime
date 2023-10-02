@@ -14,7 +14,7 @@
     top: 0;
     left: 0;
     height: 4px;
-    background-color: rgba(5, 114, 206, 0.2);
+    background-color: var(--progress-background-color);
     width: 100%;
     overflow: hidden;
   }
@@ -22,7 +22,7 @@
   .loading-bar-value {
     width: 100%;
     height: 100%;
-    background-color: rgb(5, 114, 206);
+    background-color: var(--progress-color);
     animation: indeterminateAnimation 1s infinite linear;
     transform-origin: 0% 50%;
   }
