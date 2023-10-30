@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import LoadingBar from '$lib/components/LoadingBar.svelte';
   import Showtimes from '$lib/components/Showtimes.svelte';
   import { filterShowtimes, formatDate } from '$lib/utils';
   import { addDays, format, isSameDay, startOfToday } from 'date-fns';
@@ -36,8 +35,6 @@
     Ma prochaine séance | Films pour le {formatDate($page.data.activeDate)}
   </title>
 </svelte:head>
-
-<LoadingBar />
 
 <header class="container">
   <h1>
