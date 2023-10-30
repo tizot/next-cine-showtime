@@ -28,7 +28,7 @@ await $`git add RELEASE`;
 await $`git commit -m "Bump version to ${nextVersion}"`;
 
 await $`zx scripts/clean.mjs`;
-await $`docker build -t tizot/cine:${nextVersion} -t tizot/cine:latest .`;
+await $`docker build --platform=linux/amd64 -t tizot/cine:${nextVersion} -t tizot/cine:latest .`;
 await $`docker image push tizot/cine:${nextVersion}`;
 await $`docker image push tizot/cine:latest`;
 
