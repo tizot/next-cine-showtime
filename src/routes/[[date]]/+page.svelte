@@ -19,11 +19,15 @@
   let activeTheaters = data.activeTheaters;
 
   $: activeDate = data.activeDate;
-  $: movies = data.movies
-    .map((movie) => filterShowtimes(movie, activeTheaters, hideDubbedShowtimes))
-    .filter((movie): movie is Movie => movie != null);
-  $: filteredMovies = movies.filter((movie) =>
-    deburr(movie.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())),
+  $: movies = Promise.resolve(data.deferred.movies).then((movies) =>
+    movies
+      .map((movie) => filterShowtimes(movie, activeTheaters, hideDubbedShowtimes))
+      .filter((movie): movie is Movie => movie != null),
+  );
+  $: filteredMovies = movies.then((movies) =>
+    movies.filter((movie) =>
+      deburr(movie.title.toLocaleLowerCase()).includes(deburr(query.toLocaleLowerCase())),
+    ),
   );
 </script>
 
@@ -81,7 +85,11 @@
     </div>
   </form>
 
-  <Showtimes movies={filteredMovies} />
+  {#await filteredMovies}
+    <progress />
+  {:then resolvedFilteredMovies}
+    <Showtimes movies={resolvedFilteredMovies} />
+  {/await}
 </main>
 
 <footer class="container">

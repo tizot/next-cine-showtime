@@ -37,3 +37,7 @@ export function filterShowtimes(
 
   return isEmpty(showtimesByTheater) ? null : { ...movie, showtimes: showtimesByTheater };
 }
+
+export function delay(ms: number) {
+  return new Promise((res) => setTimeout(res, ms));
+}

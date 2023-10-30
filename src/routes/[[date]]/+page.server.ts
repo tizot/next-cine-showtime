@@ -7,6 +7,7 @@ import type { TheaterId } from '$lib/types';
 import { sortBy } from 'lodash-es';
 import { fetchMovies } from '$lib/server/allocine/movies';
 import { fetchSensCritiqueRating } from '$lib/server/sens-critique';
+import { delay } from '$lib/utils';
 
 function getDate(params: RouteParams) {
   try {
@@ -43,15 +44,27 @@ function getTheatersFromCookie(cookies: Cookies) {
   }
 }
 
-export const load: PageServerLoad = ({ params, cookies, url }) => {
+const TIME_TO_RESOLVE_MS = 200;
+
+export const load: PageServerLoad = async ({ params, cookies, url }) => {
   const activeDate = getDate(params);
   const allTheaters = sortBy(Object.keys(theaterIds) as Array<TheaterId>, (s) =>
     s.toLocaleLowerCase(),
   );
   const activeTheaters = getTheatersFromUrl(url, cookies) ?? getTheatersFromCookie(cookies);
-  const movies = fetchAllMoviesSorted(activeTheaters, activeDate);
+  const moviesPromise = fetchAllMoviesSorted(activeTheaters, activeDate);
 
-  return { activeDate, movies, allTheaters, activeTheaters };
+  const moviesOrNull = await Promise.race([
+    delay(TIME_TO_RESOLVE_MS).then(() => null),
+    moviesPromise,
+  ]);
+
+  return {
+    activeDate,
+    deferred: { movies: moviesOrNull ? moviesOrNull : moviesPromise },
+    allTheaters,
+    activeTheaters,
+  };
 };
 
 export const actions: Actions = {
