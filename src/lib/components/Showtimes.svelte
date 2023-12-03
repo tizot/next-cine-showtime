@@ -23,6 +23,9 @@
   ] as const;
   type ColumnName = typeof columns[number];
 
+  let sortBy: ColumnName | null = 'sensCritiqueRating';
+  let sortDirection: 'asc' | 'desc' = 'desc';
+
   const columnDefs: Record<ColumnName, Column> = {
     title: { header: 'Titre', sorter: ({ title }) => deburr(title.toLowerCase()) },
     duration: {
@@ -32,25 +35,28 @@
     },
     sensCritiqueRating: {
       header: 'Sens Critique',
-      sorter: 'sensCritiqueRating',
+      sorter: ({ sensCritiqueRating }) =>
+        sensCritiqueRating ??
+        (sortDirection === 'asc' ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY),
       reverseByDefault: true,
     },
     userRating: {
       header: 'Spectateurs',
-      sorter: 'userRating',
+      sorter: ({ userRating }) =>
+        userRating ??
+        (sortDirection === 'asc' ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY),
       reverseByDefault: true,
     },
     pressRating: {
       header: 'Presse',
-      sorter: 'pressRating',
+      sorter: ({ pressRating }) =>
+        pressRating ??
+        (sortDirection === 'asc' ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY),
       reverseByDefault: true,
     },
     cinema: { header: 'Cinéma' },
     showtimes: { header: 'Horaires' },
   };
-
-  let sortBy: ColumnName | null = 'sensCritiqueRating';
-  let sortDirection: 'asc' | 'desc' = 'desc';
 
   $: sortByColumn = sortBy == null ? null : columnDefs[sortBy];
 
