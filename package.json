@@ -35,6 +35,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "cron": "^3.0.0",
     "cronstrue": "^2.32.0",
     "date-fns": "^2.30.0",
@@ -42,6 +43,7 @@
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "iso8601-duration": "^2.1.1",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "svelte-fa": "^3.0.4"
   }
 }
