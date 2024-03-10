@@ -33,8 +33,12 @@ jobs:
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
+        env:
+          ALLOCINE_TOKEN: ${{ secrets.ALLOCINE_TOKEN }}
+          SENS_CRITIQUE_PASSWORD: ${{ secrets.SENS_CRITIQUE_PASSWORD }}
         with:
           push: false
+          platform: linux/amd64
           tags: tizot/cine:${{ steps.read_version.outputs.content }},tizot/cine:latest
       - 
         name: Image digest
