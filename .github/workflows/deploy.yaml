@@ -1,0 +1,47 @@
+name: Deploy
+
+on: [push]
+    # paths:
+      # - "RELEASE"
+
+jobs:
+  build:
+    # if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Read version
+        id: read_version
+        uses: jaywcjlove/github-action-read-file@main
+        with:
+          path: RELEASE
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: tizot
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      -
+        # Setting up Docker Buildx with docker-container driver is required
+        # at the moment to be able to use a subdirectory with Git context
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - 
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          push: false
+          secrets: |
+            "ALLOCINE_TOKEN=${{ secrets.ALLOCINE_TOKEN }}"
+            "SENS_CRITIQUE_PASSWORD=${{ secrets.SENS_CRITIQUE_PASSWORD }}"
+          platform: linux/amd64
+          tags: tizot/cine:${{ steps.read_version.outputs.content }},tizot/cine:latest
+      - 
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
