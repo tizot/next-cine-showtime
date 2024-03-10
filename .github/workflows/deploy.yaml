@@ -24,14 +24,18 @@ jobs:
         with:
           username: tizot
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      -
+        # Setting up Docker Buildx with docker-container driver is required
+        # at the moment to be able to use a subdirectory with Git context
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - 
         name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
-          context: .
           push: false
-          tags: tizot/cine:${{ steps.read_version.outputs.content }} tizot/cine:latest
+          tags: tizot/cine:${{ steps.read_version.outputs.content }},tizot/cine:latest
       - 
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
