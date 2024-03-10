@@ -33,9 +33,9 @@ jobs:
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
-        secret-envs:
-          ALLOCINE_TOKEN: ${{ secrets.ALLOCINE_TOKEN }}
-          SENS_CRITIQUE_PASSWORD: ${{ secrets.SENS_CRITIQUE_PASSWORD }}
+        secret-envs: |
+          ALLOCINE_TOKEN=${{ secrets.ALLOCINE_TOKEN }}
+          SENS_CRITIQUE_PASSWORD=${{ secrets.SENS_CRITIQUE_PASSWORD }}
         with:
           push: false
           platform: linux/amd64
