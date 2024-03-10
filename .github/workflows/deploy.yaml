@@ -17,16 +17,14 @@ jobs:
         with:
           path: RELEASE
       - name: Build and push
-        run: echo "tizot/cine:${{ steps.read_version.outputs.content }}"
-      #   id: docker_build
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     push: true
-      #     tags: 
-      #       - tizot/cine:${{ steps.read_version.outputs.content }}
-      #       - tizot/cine:latest
-      # - tizot/cine:
-      # - name: Image digest
-      #   run: echo ${{ steps.docker_build.outputs.digest }}
-      #
-      #
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          tags: 
+            - tizot/cine:${{ steps.read_version.outputs.content }}
+            - tizot/cine:latest
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
