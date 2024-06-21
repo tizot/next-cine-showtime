@@ -106,7 +106,8 @@
   }
 
   .dates-menu a.active {
-    color: var(--color-contrast);
+    color: var(--primary);
+    font-weight: 600;
   }
 
   @media (min-width: 992px) {
