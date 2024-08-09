@@ -3,7 +3,7 @@
 #  ╰──────────────────────────────────────────────────────────╯
 FROM node:18-alpine AS builder
 
-RUN npm install --global pnpm@8
+RUN npm install --global pnpm@9
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN pnpm prune --production
 #  ╰──────────────────────────────────────────────────────────╯
 FROM node:18-alpine
 
-RUN npm install --global pnpm@8
+RUN npm install --global pnpm@9
 
 WORKDIR /app
 
