@@ -24,10 +24,10 @@ function getTheatersFromUrl(url: URL, cookies: Cookies) {
     .getAll('theater')
     .filter((t): t is TheaterId => t in theaterIds);
   if (theaters.length === 0) {
-    cookies.delete(COOKIE_THEATERS_KEY);
+    cookies.delete(COOKIE_THEATERS_KEY, { path: '/' });
     return null;
   }
-  cookies.set(COOKIE_THEATERS_KEY, JSON.stringify(theaters));
+  cookies.set(COOKIE_THEATERS_KEY, JSON.stringify(theaters), { path: '/' });
   return theaters;
 }
 
