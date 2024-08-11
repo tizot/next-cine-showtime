@@ -1,12 +1,12 @@
 import { kv } from '@vercel/kv';
 import { hoursToMilliseconds } from 'date-fns';
 
-export const SIX_HOURS = hoursToMilliseconds(6);
+export const ONE_HOUR = hoursToMilliseconds(1);
 
 export async function cache<T>(
   key: string,
   fn: () => Promise<T>,
-  ttlMilliseconds: number = SIX_HOURS,
+  ttlMilliseconds: number = ONE_HOUR,
 ) {
   const cached = await kv.get<T>(key);
   if (cached) {
