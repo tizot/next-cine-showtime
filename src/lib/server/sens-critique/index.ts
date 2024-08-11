@@ -65,5 +65,18 @@ export async function _fetchSensCritiqueRating(title: string, year: number) {
   return { rating, url: match['url'] };
 }
 
-export const fetchSensCritiqueRating = (title: string, year: number) =>
-  cache(`${SENS_CRITIQUE_KV_PREFIX}:${title}:${year}`, () => _fetchSensCritiqueRating(title, year));
+export const fetchSensCritiqueRating = (title: string, year: number) => {
+  const context = { title, year };
+  return cache(`${SENS_CRITIQUE_KV_PREFIX}:${title}:${year}`, async () => {
+    console.log('Fetching SensCritique rating ', context);
+    try {
+      return await _fetchSensCritiqueRating(title, year);
+    } catch (error: any) {
+      console.error('Error fetching SensCritique rating', {
+        ...context,
+        error: JSON.stringify(error),
+      });
+      throw error;
+    }
+  });
+};

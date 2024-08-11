@@ -112,7 +112,15 @@ export async function _fetchMovies(theater: TheaterId, date: Date) {
   return movies;
 }
 
-export const fetchMovies = (theater: TheaterId, date: Date) =>
-  cache(`${MOVIES_KV_PREFIX}:${theater}:${format(date, 'yyyy-MM-dd')}`, () =>
-    _fetchMovies(theater, date),
-  );
+export const fetchMovies = (theater: TheaterId, date: Date) => {
+  const context = { theater, date: format(date, 'yyyy-MM-dd') };
+  return cache(`${MOVIES_KV_PREFIX}:${theater}:${context.date}`, async () => {
+    console.log('Fetching movies for theater', context);
+    try {
+      return await _fetchMovies(theater, date);
+    } catch (error: any) {
+      console.error('Error fetching movies', { ...context, error: JSON.stringify(error) });
+      throw error;
+    }
+  });
+};
