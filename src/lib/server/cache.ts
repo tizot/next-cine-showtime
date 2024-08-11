@@ -16,3 +16,9 @@ export async function cache<T>(
   await kv.set(key, result, { px: new Date().valueOf() + ttlMilliseconds });
   return result;
 }
+
+export async function clearCache(prefix: string) {
+  const keys = await kv.keys(`${prefix}:*`);
+  const count = await kv.del(...keys);
+  console.log(`Cleared ${count} keys for prefix ${prefix}`);
+}

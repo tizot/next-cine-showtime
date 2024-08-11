@@ -9,6 +9,7 @@ import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
 import { ALLOCINE_TOKEN } from '$env/static/private';
 import { cache } from '../cache';
+import { MOVIES_KV_PREFIX } from '../constants';
 
 const GET_THEATER_SHOWTIMES = gql`
   query ($theater: String, $from: DateTime, $to: DateTime) {
@@ -112,4 +113,6 @@ export async function _fetchMovies(theater: TheaterId, date: Date) {
 }
 
 export const fetchMovies = (theater: TheaterId, date: Date) =>
-  cache(`movies-${theater}-${format(date, 'yyyy-MM-dd')}`, () => _fetchMovies(theater, date));
+  cache(`${MOVIES_KV_PREFIX}:${theater}:${format(date, 'yyyy-MM-dd')}`, () =>
+    _fetchMovies(theater, date),
+  );

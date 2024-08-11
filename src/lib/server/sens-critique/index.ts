@@ -2,6 +2,7 @@ import { GraphQLClient, gql } from 'graphql-request';
 import { deburr } from 'lodash-es';
 import auth from './auth';
 import { cache } from '../cache';
+import { SENS_CRITIQUE_KV_PREFIX } from '../constants';
 
 type GqlSensCritiqueRating = {
   searchResult: {
@@ -65,4 +66,4 @@ export async function _fetchSensCritiqueRating(title: string, year: number) {
 }
 
 export const fetchSensCritiqueRating = (title: string, year: number) =>
-  cache(`sens-critique:${title}:${year}`, () => _fetchSensCritiqueRating(title, year));
+  cache(`${SENS_CRITIQUE_KV_PREFIX}:${title}:${year}`, () => _fetchSensCritiqueRating(title, year));

@@ -8,6 +8,8 @@ import { sortBy } from 'lodash-es';
 import { fetchMovies } from '$lib/server/allocine/movies';
 import { fetchSensCritiqueRating } from '$lib/server/sens-critique';
 import { delay } from '$lib/utils';
+import { clearCache } from '../../lib/server/cache';
+import { MOVIES_KV_PREFIX, SENS_CRITIQUE_KV_PREFIX } from '../../lib/server/constants';
 
 function getDate(params: RouteParams) {
   try {
@@ -68,8 +70,7 @@ export const load: PageServerLoad = async ({ params, cookies, url }) => {
 };
 
 export const actions: Actions = {
-  default: () => {
-    fetchMovies.evictAll();
-    fetchSensCritiqueRating.evictAll();
+  default: async () => {
+    await Promise.all([clearCache(MOVIES_KV_PREFIX), clearCache(SENS_CRITIQUE_KV_PREFIX)]);
   },
 };
