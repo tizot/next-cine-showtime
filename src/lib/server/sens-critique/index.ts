@@ -64,4 +64,5 @@ export async function _fetchSensCritiqueRating(title: string, year: number) {
   return { rating, url: match['url'] };
 }
 
-export const fetchSensCritiqueRating = cache(_fetchSensCritiqueRating);
+export const fetchSensCritiqueRating = (title: string, year: number) =>
+  cache(`sens-critique:${title}:${year}`, () => _fetchSensCritiqueRating(title, year));

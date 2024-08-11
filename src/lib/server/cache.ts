@@ -1,27 +1,18 @@
-import { add, hoursToMilliseconds, isBefore } from 'date-fns';
+import { kv } from '@vercel/kv';
+import { hoursToMilliseconds } from 'date-fns';
 
-export const ONE_HOUR = hoursToMilliseconds(1);
+export const SIX_HOURS = hoursToMilliseconds(6);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const cache = <F extends (...args: any[]) => any>(fn: F, ttlMilliseconds = ONE_HOUR) => {
-  let store: Record<string, [Awaited<ReturnType<F>>, Date]> = {};
-  const memoized = async (...args: Parameters<F>): Promise<Awaited<ReturnType<F>>> => {
-    const key = JSON.stringify(args);
-    const now = new Date();
-    if (key in store) {
-      const [result, eviction] = store[key];
-      if (isBefore(now, eviction)) {
-        return result;
-      }
-    }
-    const result = await fn(...args);
-    store[key] = [result, add(now, { seconds: ttlMilliseconds / 1000 })];
-    return result;
-  };
-  memoized.evictAll = () => {
-    console.log(`Evicting cache for ${fn.name}`);
-    store = {};
-  };
-
-  return memoized;
-};
+export async function cache<T>(
+  key: string,
+  fn: () => Promise<T>,
+  ttlMilliseconds: number = SIX_HOURS,
+) {
+  const cached = await kv.get<T>(key);
+  if (cached) {
+    return cached;
+  }
+  const result = await fn();
+  await kv.set(key, result, { px: new Date().valueOf() + ttlMilliseconds });
+  return result;
+}

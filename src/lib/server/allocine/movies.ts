@@ -3,7 +3,7 @@ import { GraphQLClient, gql } from 'graphql-request';
 import { parse as parseGql } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { theaterIds } from '$lib/theaters';
-import { addDays } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
@@ -111,4 +111,5 @@ export async function _fetchMovies(theater: TheaterId, date: Date) {
   return movies;
 }
 
-export const fetchMovies = cache(_fetchMovies);
+export const fetchMovies = (theater: TheaterId, date: Date) =>
+  cache(`movies-${theater}-${format(date, 'yyyy-MM-dd')}`, () => _fetchMovies(theater, date));
