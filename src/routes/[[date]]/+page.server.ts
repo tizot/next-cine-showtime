@@ -5,11 +5,9 @@ import { startOfToday } from 'date-fns';
 import type { Actions, Cookies } from '@sveltejs/kit';
 import type { TheaterId } from '$lib/types';
 import { sortBy } from 'lodash-es';
-import { fetchMovies } from '$lib/server/allocine/movies';
-import { fetchSensCritiqueRating } from '$lib/server/sens-critique';
 import { delay } from '$lib/utils';
-import { clearCache } from '../../lib/server/cache';
-import { MOVIES_KV_PREFIX, SENS_CRITIQUE_KV_PREFIX } from '../../lib/server/constants';
+import { clearCache } from '$lib/server/cache';
+import { MOVIES_KV_PREFIX, SENS_CRITIQUE_KV_PREFIX } from '$lib/server/constants';
 
 function getDate(params: RouteParams) {
   try {
