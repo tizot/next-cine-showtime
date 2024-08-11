@@ -38,6 +38,7 @@
   "type": "module",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@sentry/sveltekit": "^8.25.0",
     "@vercel/kv": "^2.0.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.1",
