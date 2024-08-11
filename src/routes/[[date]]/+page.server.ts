@@ -1,7 +1,7 @@
 import type { PageServerLoad, RouteParams } from './$types';
 import { fetchAllMoviesSorted } from '$lib/server';
 import { DEFAULT_THEATERS, theaterIds } from '$lib/theaters';
-import { isBefore, startOfToday } from 'date-fns';
+import { isBefore, isValid, startOfToday } from 'date-fns';
 import { redirect, type Actions, type Cookies } from '@sveltejs/kit';
 import type { TheaterId } from '$lib/types';
 import { sortBy } from 'lodash-es';
@@ -9,11 +9,15 @@ import { delay } from '$lib/utils';
 import { clearCache } from '$lib/server/cache';
 import { MOVIES_KV_PREFIX, SENS_CRITIQUE_KV_PREFIX } from '$lib/server/constants';
 
-function getDate(params: RouteParams) {
+function getDate(params: RouteParams): Date | null {
   try {
-    return params.date != null ? new Date(params.date) : startOfToday();
+    if (params.date == null) {
+      return startOfToday();
+    }
+    const date = new Date(params.date);
+    return isValid(date) ? date : null;
   } catch (_: unknown) {
-    return startOfToday();
+    return null;
   }
 }
 
@@ -48,7 +52,7 @@ const TIME_TO_RESOLVE_MS = 200;
 
 export const load: PageServerLoad = async ({ params, cookies, url }) => {
   const activeDate = getDate(params);
-  if (isBefore(activeDate, startOfToday())) {
+  if (activeDate == null || isBefore(activeDate, startOfToday())) {
     return redirect(302, '/');
   }
 
