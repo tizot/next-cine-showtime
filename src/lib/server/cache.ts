@@ -3,7 +3,13 @@ import { env } from '$env/dynamic/private';
 import Redis from 'ioredis';
 
 export const ONE_HOUR = hoursToMilliseconds(1);
-const kv = new Redis(env.REDIS_URL!);
+const kv = new Redis({
+  host: env.REDIS_HOST!,
+  port: parseInt(env.REDIS_PORT!),
+  username: env.REDIS_USERNAME!,
+  password: env.REDIS_PASSWORD!,
+  family: 6,
+});
 
 export async function cache<T>(
   key: string,
