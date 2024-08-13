@@ -1,10 +1,10 @@
 import { error, type RequestHandler } from '@sveltejs/kit';
 import { clearCache } from '$lib/server/cache';
 import { MOVIES_KV_PREFIX, SENS_CRITIQUE_KV_PREFIX } from '$lib/server/constants';
-import { CRON_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ request }) => {
-  if (request.headers.get('Authorization') !== `Bearer ${CRON_SECRET}`) {
+  if (request.headers.get('Authorization') !== `Bearer ${env.CRON_SECRET}`) {
     error(401, 'Unauthorized');
   }
 

@@ -41,7 +41,7 @@ const _clean = (s: string) => {
 };
 
 export async function _fetchSensCritiqueRating(title: string, year: number) {
-  const token = await auth.getToken();
+  const token = await auth().getToken();
   const client = new GraphQLClient('https://gql.senscritique.com/graphql', {
     headers: { Authorization: token },
   });

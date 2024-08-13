@@ -1,19 +1,23 @@
-import { kv } from '@vercel/kv';
 import { hoursToMilliseconds } from 'date-fns';
+import { env } from '$env/dynamic/private';
+import Redis from 'ioredis';
 
 export const ONE_HOUR = hoursToMilliseconds(1);
+const kv = new Redis(env.REDIS_URL!);
 
 export async function cache<T>(
   key: string,
   fn: () => Promise<T>,
   ttlMilliseconds: number = ONE_HOUR,
 ) {
-  const cached = await kv.get<T>(key);
-  if (cached) {
-    return cached;
+  // TODO: check that expired values are not returned
+  const cached = await kv.get(key);
+  const cachedValue = (cached ? JSON.parse(cached) : null) as T | null;
+  if (cachedValue) {
+    return cachedValue;
   }
   const result = await fn();
-  await kv.set(key, result, { px: new Date().valueOf() + ttlMilliseconds });
+  await kv.set(key, JSON.stringify(result), 'PX', new Date().valueOf() + ttlMilliseconds);
   return result;
 }
 

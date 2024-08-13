@@ -1,5 +1,5 @@
 import { isAfter } from 'date-fns';
-import { SENS_CRITIQUE_PASSWORD } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 const FIREBASE_REST_API = 'https://identitytoolkit.googleapis.com/v1/accounts';
 const API_KEY = 'AIzaSyAHxGE6otUcjogt6EXNzXrAZJr99WZ1MdI';
@@ -60,7 +60,14 @@ class SensCritiqueAuth {
   }
 }
 
-export default new SensCritiqueAuth(
-  'masset.camille_senscritique@gmail.com',
-  SENS_CRITIQUE_PASSWORD,
-);
+let _instance: SensCritiqueAuth | null = null;
+
+export default function SensCritique() {
+  if (!_instance) {
+    _instance = new SensCritiqueAuth(
+      'masset.camille_senscritique@gmail.com',
+      env.SENS_CRITIQUE_PASSWORD,
+    );
+  }
+  return _instance;
+}

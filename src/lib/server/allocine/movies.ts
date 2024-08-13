@@ -7,7 +7,7 @@ import { addDays, format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
-import { ALLOCINE_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { cache } from '../cache';
 import { MOVIES_KV_PREFIX } from '../constants';
 
@@ -76,7 +76,7 @@ type GqlTheaterShowtimes = {
 
 export async function _fetchMovies(theater: TheaterId, date: Date) {
   const client = new GraphQLClient('https://graph.allocine.fr/v1/public', {
-    headers: { Authorization: `Bearer ${ALLOCINE_TOKEN}` }, // TODO: check that env is properly set
+    headers: { Authorization: `Bearer ${env.ALLOCINE_TOKEN}` }, // TODO: check that env is properly set
   });
   const query: TypedDocumentNode<GqlTheaterShowtimes> = parseGql(GET_THEATER_SHOWTIMES);
   const data = await client.request(query, {
