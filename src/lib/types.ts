@@ -8,6 +8,7 @@ export type Movie = {
   title: string;
   year: number;
   duration: string;
+  genres: Array<string>;
   allocineId: string;
   sensCritiqueRating?: number | null;
   sensCritiqueUrl?: string | null;

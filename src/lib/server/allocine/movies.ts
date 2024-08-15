@@ -21,6 +21,7 @@ const GET_THEATER_SHOWTIMES = gql`
             internalId
             title
             runtime
+            genres
             data {
               productionYear
             }
@@ -43,6 +44,49 @@ const GET_THEATER_SHOWTIMES = gql`
   }
 `;
 
+const GENRES = {
+  ACTION: 'Action',
+  ADVENTURE: 'Aventure',
+  ANIMATION: 'Animation',
+  BIOPIC: 'Biopic',
+  BOLLYWOOD: 'Bollywood',
+  CARTOON: 'Dessin animé',
+  CLASSIC: 'Classique',
+  COMEDY: 'Comédie',
+  COMEDY_DRAMA: 'Comédie dramatique',
+  CONCERT: 'Concert',
+  DETECTIVE: 'Policier',
+  DIVERS: 'Divers',
+  DOCUMENTARY: 'Documenataire',
+  DRAMA: 'Drame',
+  EROTIC: 'Érotique',
+  EXPERIMENTAL: 'Expérimental',
+  FAMILY: 'Famille',
+  FANTASY: 'Fantastique',
+  HISTORICAL: 'Historique',
+  HISTORICAL_EPIC: 'Péplum',
+  HORROR: 'Épouvante-horreur',
+  JUDICIAL: 'Judiciaire',
+  KOREAN_DRAMA: 'Drame',
+  MARTIAL_ARTS: 'Arts martiaux',
+  MEDICAL: 'Médical',
+  MOBISODE: 'Mobisode',
+  MOVIE_NIGHT: 'Movie night',
+  MUSIC: 'Musique',
+  MUSICAL: 'Comédie musicale',
+  OPERA: 'Opéra',
+  ROMANCE: 'Romance',
+  SCIENCE_FICTION: 'Science-fiction',
+  PERFORMANCE: 'Spectacle',
+  SOAP: 'Feuilleton',
+  SPORT_EVENT: 'Événement sportif',
+  SPY: 'Espionnage',
+  THRILLER: 'Thriller',
+  WARMOVIE: 'Guerre',
+  WEB_SERIES: 'Web séries',
+  WESTERN: 'Western',
+};
+
 // TODO: generate this type with code-gen
 type GqlTheaterShowtimes = {
   movieShowtimeList: {
@@ -53,6 +97,7 @@ type GqlTheaterShowtimes = {
           internalId: string;
           title: string;
           runtime: string;
+          genres: Array<keyof typeof GENRES>;
           data: {
             productionYear: number;
           };
@@ -98,6 +143,7 @@ export async function _fetchMovies(theater: TheaterId, date: Date) {
       allocineId: movie.internalId,
       year: movie.data?.productionYear,
       duration: movie.runtime ? formatDuration(parseDuration(movie.runtime)) : 'N/A',
+      genres: movie.genres?.slice(0, 2)?.map((g) => GENRES[g] ?? g) ?? [],
       userRating: movie.stats?.userRating?.score,
       pressRating: movie.stats?.pressReview?.score,
       showtimes: {

@@ -17,6 +17,8 @@
             target="_blank">
             {movie.title}
           </a>
+          <br />
+          <span class="movie-genre">{movie.genres.join(', ')}</span>
         </td>
         <td rowspan={theatersCount}>{movie.duration}</td>
         <td rowspan={theatersCount}>
@@ -76,5 +78,11 @@
 
   td > a {
     color: var(--color-secondary);
+    font-weight: 500;
+  }
+
+  td > span.movie-genre {
+    color: var(--muted-color);
+    font-size: small;
   }
 </style>
