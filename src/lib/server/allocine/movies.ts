@@ -4,7 +4,7 @@ import { parse as parseGql } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { theaterIds } from '$lib/theaters';
 import { addDays, format } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
+import { fromZonedTime } from 'date-fns-tz';
 import { parse as parseDuration } from 'iso8601-duration';
 import { formatDuration } from '$lib/utils';
 import { env } from '$env/dynamic/private';
@@ -102,7 +102,7 @@ export async function _fetchMovies(theater: TheaterId, date: Date) {
       pressRating: movie.stats?.pressReview?.score,
       showtimes: {
         [theater]: edge.node.showtimes.map((s) => ({
-          startsAt: zonedTimeToUtc(s.startsAt, 'Europe/Paris'),
+          startsAt: fromZonedTime(s.startsAt, 'Europe/Paris'),
           version: s.diffusionVersion,
         })),
       },
