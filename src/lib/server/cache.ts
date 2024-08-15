@@ -1,4 +1,4 @@
-import { hoursToMilliseconds } from 'date-fns';
+import { addDays, addHours, hoursToMilliseconds, isBefore, startOfToday } from 'date-fns';
 import { env } from '$env/dynamic/private';
 import Redis from 'ioredis';
 
@@ -11,19 +11,24 @@ const kv = new Redis({
   family: 6,
 });
 
-export async function cache<T>(
-  key: string,
-  fn: () => Promise<T>,
-  ttlMilliseconds: number = ONE_HOUR,
-) {
-  // TODO: check that expired values are not returned
-  const cached = await kv.get(key);
-  const cachedValue = (cached ? JSON.parse(cached) : null) as T | null;
+function getNextReset(hour: number): Date {
+  const now = new Date();
+  const hourToday = addHours(startOfToday(), hour);
+  if (isBefore(now, hourToday)) {
+    return hourToday;
+  }
+  return addDays(hourToday, 1);
+}
+
+export async function cache<T>(key: string, fn: () => Promise<T>, expiresAt?: Date) {
+  const cachedString = await kv.get(key);
+  const cachedValue = (cachedString ? JSON.parse(cachedString) : null) as T | null;
   if (cachedValue) {
     return cachedValue;
   }
   const result = await fn();
-  await kv.set(key, JSON.stringify(result), 'PX', new Date().valueOf() + ttlMilliseconds);
+  expiresAt = expiresAt ?? getNextReset(5);
+  await kv.set(key, JSON.stringify(result), 'PXAT', expiresAt.valueOf());
   return result;
 }
 
