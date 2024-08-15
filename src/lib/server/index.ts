@@ -3,6 +3,7 @@ import { theaterIds } from '../theaters';
 import type { Movies, TheaterId } from '../types';
 import { fetchMovies } from './allocine/movies';
 import { fetchSensCritiqueRating } from './sens-critique';
+import SensCritique from './sens-critique/auth';
 
 export async function fetchAllMovies(theaters: Array<TheaterId>, date: Date) {
   const movies: Movies = {};
@@ -29,6 +30,7 @@ export async function fetchAllMovies(theaters: Array<TheaterId>, date: Date) {
   }
 
   const allTitles = Object.keys(movies);
+  await SensCritique().refresh();
   const scData = await Promise.all(
     allTitles.map((title) => fetchSensCritiqueRating(title, movies[title].year)),
   );
