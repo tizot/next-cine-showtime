@@ -20,7 +20,7 @@ type GqlSensCritiqueRating = {
 
 const GET_SENSCRITIQUE_RATING = gql`
   query Search($title: String!) {
-    searchResult(keywords: $title, limit: 15, universe: "movie") {
+    searchResult(keywords: $title, limit: 50, universe: "movie") {
       results {
         universe
         products_list {
