@@ -40,16 +40,32 @@ const _clean = (s: string) => {
     .replace(/\s/g, '');
 };
 
+const _removeStopWords = (s: string) => {
+  return s.replace(/\b(?:le|la|les|un|une|des|du|de|d'|l')\b/g, '');
+};
+
+const _extractMovies = (results: GqlSensCritiqueRating) => {
+  return results.searchResult.results.find((p) => p.universe == 'movie')?.products_list ?? [];
+};
+
 export async function _fetchSensCritiqueRating(title: string, year: number) {
   const token = await auth().getToken();
   const client = new GraphQLClient('https://gql.senscritique.com/graphql', {
     headers: { Authorization: token },
   });
-  const data: GqlSensCritiqueRating = await client.request(GET_SENSCRITIQUE_RATING, { title });
-  const movies = data.searchResult.results.find((p) => p.universe == 'movie') ?? {
-    products_list: [],
-  };
-  const match = movies.products_list.find(
+  const resultsWithStopWords: GqlSensCritiqueRating = await client.request(
+    GET_SENSCRITIQUE_RATING,
+    { title },
+  );
+  const resultsWithoutStopWords: GqlSensCritiqueRating = await client.request(
+    GET_SENSCRITIQUE_RATING,
+    { title: _removeStopWords(title) },
+  );
+  const movies = [
+    ..._extractMovies(resultsWithStopWords),
+    ..._extractMovies(resultsWithoutStopWords),
+  ];
+  const match = movies.find(
     // Sometimes, SensCritique says the movie is from 2021 but Allocine says it is from 2022.
     // Since it is highly unlikely that two different movies with the same name are produced
     // less than 2 years apart, this condition is enough.
