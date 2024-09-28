@@ -56,10 +56,12 @@ export async function _fetchSensCritiqueRating(title: string, year: number) {
     (m) => Math.abs(m.year_of_production - year) <= 2 && _clean(m.title) === _clean(title),
   );
   if (!match) {
+    console.warn('No SensCritique rating found', { title, year });
     return { rating: null, url: null };
   }
   const rating = parseFloat(match['rating']);
   if (isNaN(rating)) {
+    console.warn('Invalid SensCritique rating', { title, year, rating: match['rating'] });
     return { rating: null, url: null };
   }
   return { rating, url: match['url'] };
